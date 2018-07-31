@@ -11,6 +11,7 @@ public class TestClient : MonoBehaviour
     private TcpClient socketConnection;
     private Thread clientReceiveThread;
     private Byte[] buffer;
+
     // Use this for initialization
     void Start()
     {
@@ -69,12 +70,11 @@ public class TestClient : MonoBehaviour
         {
             Debug.Log("Socket Exception:" + socketException);
         }
-        throw new NotImplementedException();
     }
 
     private void SendMessage()
     {
-        if(socketConnection == null)
+        if (socketConnection == null)
         {
             return;
         }
@@ -83,8 +83,11 @@ public class TestClient : MonoBehaviour
             NetworkStream stream = socketConnection.GetStream();
             if (stream.CanWrite)
             {
-                string clientMessage = "This is a message from one of your clients.";
-                byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(clientMessage);
+                //string clientMessage = "This is a message from one of your clients.";
+                LoginProtocol loginProtocol = new LoginProtocol() {userId = "hello", userPassword = "world" };
+                Byte[] serializedData = ProtocolHelper.ConvertProtocolToBytes(loginProtocol);
+                byte[] clientMessageAsByteArray = GameProtocol.Encoder.Encode(serializedData);
+                //byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(clientMessage);
                 stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
                 Debug.Log("Client sent his message - should be received by server");
             }

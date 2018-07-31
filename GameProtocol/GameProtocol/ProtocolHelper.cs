@@ -1,5 +1,4 @@
-﻿using ProtoBuf;
-using System;
+﻿using System;
 using System.IO;
 
 namespace GameProtocol
@@ -11,8 +10,8 @@ namespace GameProtocol
             try
             {
                 using (MemoryStream ms = new MemoryStream())
-                {                    
-                    Serializer.Serialize<T>(ms, protocol);
+                {
+                    ProtoBuf.Serializer.SerializeWithLengthPrefix<T>(ms, protocol, ProtoBuf.PrefixStyle.Base128);
                     byte[] result = new Byte[ms.Length];
                     ms.Position = 0;
                     ms.Read(result, 0, result.Length);
@@ -33,7 +32,7 @@ namespace GameProtocol
                 {
                     ms.Write(bytes, 0, bytes.Length);
                     ms.Position = 0;
-                    T result = Serializer.Deserialize<T>(ms);
+                    T result = ProtoBuf.Serializer.DeserializeWithLengthPrefix<T>(ms, ProtoBuf.PrefixStyle.Base128);
                     return result;
                 }
             }

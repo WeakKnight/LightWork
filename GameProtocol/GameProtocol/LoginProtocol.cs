@@ -5,19 +5,11 @@ using ProtoBuf;
 namespace GameProtocol
 {
     [ProtoContract]
-    public class LoginProtocol : Protocol
+    public class LoginProtocol
     {
-        public LoginProtocol(string userId, string userPassword)
-        {
-            this.userId = userId;
-            this.userPassword = userPassword;
-            this.protocolTypeEnum = ProtocolTypeEnum.Login;
-        }
-
         [ProtoMember(1)]
-        public string userId;
-
+        public string userId { get; set; }
         [ProtoMember(2)]
-        public string userPassword;
+        public string userPassword { get; set; }
     }
 }

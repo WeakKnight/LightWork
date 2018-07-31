@@ -18,7 +18,7 @@ namespace GameServer
         private Queue<Byte[]> sendCache;
         private bool isSending;
 
-        public Action<Protocol> receiveCallBack;
+        public Action<LoginProtocol> receiveCallBack;
 
         public ClientToken()
         {
@@ -46,6 +46,7 @@ namespace GameServer
             if (data != null)
             {
                 LoginProtocol loginProtocol = ProtocolHelper.ConvertBytesToProtocol<LoginProtocol>(data);
+                Debug.Log("成功解析数据协议" + loginProtocol.userId + ":" + loginProtocol.userPassword);
                 receiveCallBack?.Invoke(loginProtocol);
                 ReadData();
             }

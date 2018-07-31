@@ -1,28 +1,21 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "18d71ab03a853b70b34288ee11c26f8f95053c86"
+    "signature": "2df58bbd00eabd06a8e29166245dab8a14773f2f"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.0": {
       "GameServer/1.0.0": {
         "dependencies": {
-          "GameProtocol": "1.0.0",
-          "Google.Protobuf": "3.6.0",
-          "SimpleTCP": "1.0.24"
+          "GameProtocol": "1.0.0"
         },
         "runtime": {
           "GameServer.dll": {}
         }
       },
-      "Google.Protobuf/3.6.0": {
-        "runtime": {
-          "lib/netstandard1.0/Google.Protobuf.dll": {}
-        }
-      },
       "Microsoft.NETCore.Targets/1.1.0": {},
-      "protobuf-net/2.3.13": {
+      "protobuf-net/2.3.14": {
         "dependencies": {
           "System.Reflection.Emit": "4.3.0",
           "System.Reflection.Emit.Lightweight": "4.3.0",
@@ -32,11 +25,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/protobuf-net.dll": {}
-        }
-      },
-      "SimpleTCP/1.0.24": {
-        "runtime": {
-          "lib/net45/SimpleTCP.dll": {}
         }
       },
       "System.Collections/4.3.0": {
@@ -269,7 +257,7 @@
       },
       "GameProtocol/1.0.0": {
         "dependencies": {
-          "protobuf-net": "2.3.13"
+          "protobuf-net": "2.3.14"
         },
         "runtime": {
           "GameProtocol.dll": {}
@@ -283,13 +271,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Google.Protobuf/3.6.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-gGYQonf/3HSQR45QIK3mvBChx2wguUn0azZM1SbGVjO1tFA0mhgdYFhz4EXBAEH01+wem0zIwtWniTCe5DHpYg==",
-      "path": "google.protobuf/3.6.0",
-      "hashPath": "google.protobuf.3.6.0.nupkg.sha512"
-    },
     "Microsoft.NETCore.Targets/1.1.0": {
       "type": "package",
       "serviceable": true,
@@ -297,19 +278,12 @@
       "path": "microsoft.netcore.targets/1.1.0",
       "hashPath": "microsoft.netcore.targets.1.1.0.nupkg.sha512"
     },
-    "protobuf-net/2.3.13": {
+    "protobuf-net/2.3.14": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-xNHRPgguWPl+w9+L3JZMnXoR511ZgZSSXBvpe3G57ZQGSa3JpUxHHnQm/lD/sEH+25/9PCZrCINj246S5IHn0g==",
-      "path": "protobuf-net/2.3.13",
-      "hashPath": "protobuf-net.2.3.13.nupkg.sha512"
-    },
-    "SimpleTCP/1.0.24": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-mQEKbXruksWRmKeUuID7S+Ltg092EiWXwnomnVYohkY+/rTRiIp4PUTE/bdBEj6oh1gIt0lp4l0GBlwtOhqU5w==",
-      "path": "simpletcp/1.0.24",
-      "hashPath": "simpletcp.1.0.24.nupkg.sha512"
+      "sha512": "sha512-cTYvv2rKliO47mtSQ2KnjfBmczy+5/HUXRu5x1PQQX7gbxfkAARHdm0raGyCCfJIlSslSGu2jOBO+ATICCydwg==",
+      "path": "protobuf-net/2.3.14",
+      "hashPath": "protobuf-net.2.3.14.nupkg.sha512"
     },
     "System.Collections/4.3.0": {
       "type": "package",
