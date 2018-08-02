@@ -5,17 +5,31 @@ namespace GameProtocol
 {
     public static class ProtocolHelper
     {
-        public static Byte[] ConvertProtocolToBytes<T>(T protocol)
+        public static Byte[] ConvertProtocolToBytes(Protocol protocol)
         {
             try
             {
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    ProtoBuf.Serializer.SerializeWithLengthPrefix<T>(ms, protocol, ProtoBuf.PrefixStyle.Base128);
+                    //先把协议类转换成简单的字节流
+                    ProtoBuf.Serializer.NonGeneric.SerializeWithLengthPrefix(ms, protocol, ProtoBuf.PrefixStyle.Base128, Mapper.GetProtocolIntMappingValue(protocol));
+                    //ProtoBuf.Serializer.SerializeWithLengthPrefix<T>(ms, protocol, ProtoBuf.PrefixStyle.Base128);
                     byte[] result = new Byte[ms.Length];
                     ms.Position = 0;
                     ms.Read(result, 0, result.Length);
-                    return result;
+
+                    //再在序列化的字节流前加上协议号
+                    MemoryStream resultMs = new MemoryStream();
+                    BinaryWriter br = new BinaryWriter(resultMs);
+                    br.Write(Mapper.GetProtocolIntMappingValue(protocol));
+                    br.Write(result);
+
+                    byte[] finalResult = resultMs.ToArray();
+
+                    br.Close();
+                    resultMs.Close();
+
+                    return finalResult;
                 }
             }
             catch (Exception ex)
@@ -24,21 +38,33 @@ namespace GameProtocol
             }
         }
 
-        public static T ConvertBytesToProtocol<T>(Byte[] bytes)
+        public static Protocol ConvertBytesToProtocol(Byte[] bytes)
         {
             try
             {
+                Type protocolType;
                 using (MemoryStream ms = new MemoryStream())
                 {
                     ms.Write(bytes, 0, bytes.Length);
                     ms.Position = 0;
-                    T result = ProtoBuf.Serializer.DeserializeWithLengthPrefix<T>(ms, ProtoBuf.PrefixStyle.Base128);
-                    return result;
+                    BinaryReader br = new BinaryReader(ms);
+                    int typeCode = br.ReadInt32();
+                    protocolType = Mapper.GetIntProtocolMappingValue(typeCode);
+                    br.Close();
+                }
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    ms.Write(bytes, 4, bytes.Length - 4);
+                    ms.Position = 0;
+                    Object protocol;
+                    ProtoBuf.Serializer.NonGeneric.TryDeserializeWithLengthPrefix(ms, ProtoBuf.PrefixStyle.Base128, (t)=>Mapper.GetIntProtocolMappingValue(t), out protocol);
+                    return protocol as Protocol;
                 }
             }
             catch (Exception e)
             {
-                return default(T);
+                return default(Protocol);
             }
         }
     }

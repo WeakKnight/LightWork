@@ -1,17 +1,27 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "2df58bbd00eabd06a8e29166245dab8a14773f2f"
+    "signature": "2a7daeeb7b9c19cab26ed7ba864c63da4eb459d3"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.0": {
       "GameServer/1.0.0": {
         "dependencies": {
-          "GameProtocol": "1.0.0"
+          "GameProtocol": "1.0.0",
+          "LiteDB": "4.1.4"
         },
         "runtime": {
           "GameServer.dll": {}
+        }
+      },
+      "LiteDB/4.1.4": {
+        "dependencies": {
+          "System.Reflection": "4.3.0",
+          "System.Reflection.TypeExtensions": "4.4.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/LiteDB.dll": {}
         }
       },
       "Microsoft.NETCore.Targets/1.1.0": {},
@@ -270,6 +280,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "LiteDB/4.1.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-g4g9JlHzRBZl+Gd2UbiRdszZ7t8wozU2wX7+5xY5uE79tmcgcDhha+ubAP84G1VLbwQmhBGCzRfIx+epLmJciQ==",
+      "path": "litedb/4.1.4",
+      "hashPath": "litedb.4.1.4.nupkg.sha512"
     },
     "Microsoft.NETCore.Targets/1.1.0": {
       "type": "package",

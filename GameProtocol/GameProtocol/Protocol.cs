@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ProtoBuf;
 
 namespace GameProtocol
 {
+    [ProtoContract]
+    [ProtoInclude(1, typeof(LoginProtocol))]
     public class Protocol
     {
-        public ProtocolTypeEnum protocolTypeEnum = ProtocolTypeEnum.NeedImplemention;
     }
 
     public enum ProtocolTypeEnum
     {
-        NeedImplemention = 0,
-        Login = 1,
-        Logout = 2,
+        Login = 0,
+        Logout = 1,
     }
 }

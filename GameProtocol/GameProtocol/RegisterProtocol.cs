@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using ProtoBuf;
+
 namespace GameProtocol
 {
+
     [ProtoContract]
-    public class LoginProtocol : Protocol
+    public class RegisterProtocol : Protocol
     {
         [ProtoMember(1)]
         public string userId { get; set; }
