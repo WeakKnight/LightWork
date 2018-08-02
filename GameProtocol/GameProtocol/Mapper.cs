@@ -6,23 +6,47 @@ namespace GameProtocol
 {
     public static class Mapper
     {
-        static Dictionary<Type, int> ProtocolToIntDic = new Dictionary<Type, int>
+        static readonly Dictionary<Type, int> ProtocolToIntDic = new Dictionary<Type, int>
         {
                 {
                     typeof(LoginProtocol),1
                 },
                 {
                     typeof(RegisterProtocol),2
+                },
+                {
+                    typeof(LoginSuccessProtocol),3
+                },
+                {
+                    typeof(LoginFailedProtocol),4
+                },
+                {
+                    typeof(RegisterSuccessProtocol),5
+                },
+                {
+                    typeof(RegisterFailedProtocol),6
                 }
         };
 
-        static Dictionary<int, Type> IntToProtocolDic = new Dictionary<int, Type>
+        static readonly Dictionary<int, Type> IntToProtocolDic = new Dictionary<int, Type>
         {
                 {
                     1,typeof(LoginProtocol)
                 },
                 {
                     2,typeof(RegisterProtocol)
+                },
+                {
+                    3,typeof(LoginSuccessProtocol)
+                },
+                {
+                    4,typeof(LoginFailedProtocol)
+                },
+                {
+                    5,typeof(RegisterSuccessProtocol)
+                },
+                {
+                    6,typeof(RegisterFailedProtocol)
                 }
         };
 

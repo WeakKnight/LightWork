@@ -41,5 +41,21 @@ namespace GameProtocol
 
             return result;
         }
+
+        public static Byte[] Decode(Byte[] data)
+        {
+
+            MemoryStream ms = new MemoryStream(data);
+            BinaryReader br = new BinaryReader(ms);
+
+            int len = br.ReadInt32();
+            if (len > ms.Length - ms.Position)
+            {
+                return null;
+            }
+            Byte[] result = br.ReadBytes(len);
+
+            return result;
+        }
     }
 }

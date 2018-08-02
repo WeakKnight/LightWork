@@ -7,13 +7,15 @@ using System.Threading;
 using GameProtocol;
 namespace GameServer
 {
-    class Server
+    public class Server
     {
         private Socket server;
         private int maxClient = 10;
         private int port = 35353;
 
         private Stack<ClientToken> pools;
+        private List<Service> services = new List<Service>();
+        public Dictionary<Type, Database> databases = new Dictionary<Type, Database>();
 
         public Server()
         {
@@ -25,14 +27,42 @@ namespace GameServer
         {
             server.Listen(maxClient);
 
+            //注册数据库
+            RegisterDatabase();
+
+            //注册所有服务
+            RegisterServices();
+
             pools = new Stack<ClientToken>(maxClient);
             for (int i = 0; i < maxClient; i++)
             {
                 ClientToken clientToken = new ClientToken();
+                
+                //给client注册进去所有的服务
+                for (int j = 0; j < services.Count; j++)
+                {
+                    Service service = services[j];
+                    clientToken.receiveCallBack += service.Execute;
+                }
+
                 pools.Push(clientToken);
             }
 
             server.BeginAccept(AsyncAccept, null);
+        }
+
+        private void RegisterDatabase()
+        {
+            //注册账号数据库
+            databases[typeof(AccountDatabase)] = new AccountDatabase();
+        }
+
+        private void RegisterServices()
+        {
+            Debug.Log("已注册 登录服务");
+            services.Add(new LoginService(this));
+            Debug.Log("已注册 注册服务");
+            services.Add(new RegisterService(this));
         }
 
         private void AsyncAccept(IAsyncResult result)

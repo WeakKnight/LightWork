@@ -24,7 +24,8 @@ public class TestClient : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SendMessage();
+            LoginProtocol loginProtocol = new LoginProtocol() { userId = "hello", userPassword = "world" };
+            SendMessage(loginProtocol);
         }
     }
 
@@ -60,8 +61,16 @@ public class TestClient : MonoBehaviour
                     {
                         Byte[] incomingData = new Byte[length];
                         Array.Copy(buffer, 0, incomingData, 0, length);
-                        string serverMessage = Encoding.ASCII.GetString(incomingData);
-                        Debug.Log("server message received as" + serverMessage);
+                        Byte[] decodingData = GameProtocol.Encoder.Decode(incomingData);
+                        Protocol protocol = ProtocolHelper.ConvertBytesToProtocol(decodingData);
+                        if (protocol != null)
+                        {
+                            Debug.Log("收到协议类型" + protocol.GetType().ToString());
+                        }
+                        else
+                        {
+                            Debug.Log("收到协议反序列化失败");
+                        }
                     }
                 }
             }
@@ -72,7 +81,7 @@ public class TestClient : MonoBehaviour
         }
     }
 
-    private void SendMessage()
+    private void SendMessage(Protocol protocol)
     {
         if (socketConnection == null)
         {
@@ -84,8 +93,7 @@ public class TestClient : MonoBehaviour
             if (stream.CanWrite)
             {
                 //string clientMessage = "This is a message from one of your clients.";
-                LoginProtocol loginProtocol = new LoginProtocol() {userId = "hello", userPassword = "world" };
-                Byte[] serializedData = ProtocolHelper.ConvertProtocolToBytes(loginProtocol);
+                Byte[] serializedData = ProtocolHelper.ConvertProtocolToBytes(protocol);
                 byte[] clientMessageAsByteArray = GameProtocol.Encoder.Encode(serializedData);
                 //byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(clientMessage);
                 stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);

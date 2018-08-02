@@ -18,13 +18,14 @@ namespace GameServer
         private Queue<Byte[]> sendCache;
         private bool isSending;
 
-        public Action<Protocol> receiveCallBack;
+        public Action<Protocol, ClientToken> receiveCallBack;
 
         public ClientToken()
         {
             buffer = new Byte[1024];
             receiveCache = new List<Byte>();
             sendCache = new Queue<Byte[]>();
+            receiveCallBack = BasicReceiveCallBack;
         }
 
         public void Receive(Byte[] data)
@@ -39,15 +40,19 @@ namespace GameServer
             }
         }
 
+        private void BasicReceiveCallBack(Protocol protocol, ClientToken clientToken)
+        {
+            Debug.Log("收到协议,类型为:" + protocol.GetType().ToString() + ";");
+        }
+
         private void ReadData()
         {
             Byte[] data = GameProtocol.Encoder.Decode(ref receiveCache);
 
             if (data != null)
             {
-                Protocol loginProtocol = ProtocolHelper.ConvertBytesToProtocol(data);
-                //Debug.Log("成功解析数据协议" + loginProtocol.userId + ":" + loginProtocol.userPassword);
-                receiveCallBack?.Invoke(loginProtocol);
+                Protocol protocol = ProtocolHelper.ConvertBytesToProtocol(data);
+                receiveCallBack(protocol, this);
                 ReadData();
             }
             else
