@@ -54,6 +54,7 @@ public class LoginManager : MonoBehaviour {
         else if (protocol.GetType() == typeof(LoginSuccessProtocol))
         {
             ClientManager.instance.receiveCallBack -= LoginReceive;
+            messageText.text = "登录成功";
         }
     }
 
@@ -66,19 +67,36 @@ public class LoginManager : MonoBehaviour {
         };
 
         ClientManager.instance.SendMessage(registerProtocol);
+        ClientManager.instance.receiveCallBack += RegisterReceive;
 
         messageText.text = "";
         idInput.interactable = false;
         passwordInput.interactable = false;
     }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private void RegisterReceive(Protocol protocol)
+    {
+        if (protocol.GetType() == typeof(RegisterFailedProtocol))
+        {
+            RegisterFailedProtocol registerFailedProtocol = protocol as RegisterFailedProtocol;
+            ClientManager.instance.receiveCallBack -= RegisterReceive;
+
+            idInput.interactable = true;
+            passwordInput.interactable = true;
+
+            if (registerFailedProtocol.state == RegisterFailedState.IDAlreadyExist)
+            {
+                messageText.text = "注册失败,已经存在的ID";
+            }
+            else if (registerFailedProtocol.state == RegisterFailedState.Unknown)
+            {
+                messageText.text = "注册失败，我也不知道为啥";
+            }
+        }
+        else if (protocol.GetType() == typeof(RegisterSuccessProtocol))
+        {
+            ClientManager.instance.receiveCallBack -= RegisterReceive;
+            messageText.text = "注册成功";
+        }
+    }
 }

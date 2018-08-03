@@ -8,14 +8,14 @@ namespace GameServer
 {
     public class Account
     {
-        public string id;
-        public string password;
+        public string Id { get; set; }
+        public string Password { get; set; }
     }
 
     public class AccountDatabase : Database
     {
-        private string path = @"Account.db";
-        private string accounts = "accounts";
+        private readonly string path = @"Account.db";
+        private readonly string accounts = "accounts";
         public void Write(Account account)
         {
             using (var db = new LiteDatabase(path))

@@ -26,7 +26,7 @@ namespace GameServer
             AccountDatabase accountDatabase = server.databases[typeof(AccountDatabase)] as AccountDatabase;
 
             //查询是否有用户名密码相符的用户
-            if (accountDatabase.Find(x => (x.id == loginProtocol.userId && x.password == loginProtocol.userPassword)) != null)
+            if (accountDatabase.Find(x => (x.Id == loginProtocol.userId && x.Password == loginProtocol.userPassword)) != null)
             {
                 //登录成功
                 LoginSuccessProtocol loginSuccessProtocol = new LoginSuccessProtocol();
@@ -42,7 +42,7 @@ namespace GameServer
             {
                 //登录失败
                 LoginFailedProtocol loginFailedProtocol = new LoginFailedProtocol();
-                if (accountDatabase.Find(x => (x.id == loginProtocol.userId)) != null)
+                if (accountDatabase.Find(x => (x.Id == loginProtocol.userId)) != null)
                 {
                     loginFailedProtocol.State = LoginFailedState.WrongPassword;
                 }

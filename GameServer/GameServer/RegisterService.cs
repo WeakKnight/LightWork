@@ -26,7 +26,7 @@ namespace GameServer
             AccountDatabase accountDatabase = server.databases[typeof(AccountDatabase)] as AccountDatabase;
 
             //检查是否ID已经被注册
-            if (accountDatabase.Find(x => (x.id == registerProtocol.userId)) != null)
+            if (accountDatabase.Find(x => (x.Id == registerProtocol.userId)) != null)
             {
                 //已被注册，返回注册失败
                 RegisterFailedProtocol registerFailedProtocol = new RegisterFailedProtocol();
@@ -42,6 +42,9 @@ namespace GameServer
                 //注册成功
                 RegisterSuccessProtocol registerSuccessProtocol = new RegisterSuccessProtocol();
                 registerSuccessProtocol.PassBadge = 0;
+
+                //写入数据库
+                accountDatabase.Write(new Account() {Id = registerProtocol.userId, Password = registerProtocol.userPassword });
 
                 Byte[] serializedProtocol = ProtocolHelper.ConvertProtocolToBytes(registerSuccessProtocol);
                 Byte[] encodingData = GameProtocol.Encoder.Encode(serializedProtocol);
